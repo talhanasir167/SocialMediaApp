@@ -2,7 +2,6 @@ const { PrismaClient } = require('@prisma/client')
 const asyncHandler = require('express-async-handler')
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
-const transporter = require('../emailService');
 const emailService = require('../emailService');
 
 const register = asyncHandler(async (req, res) => {
@@ -20,7 +19,9 @@ const register = asyncHandler(async (req, res) => {
 	});
 	
 	if (user) {
-		// emailService.sendRegistrationEmail(req.body);
+		req.body.subject = 'Registered Successfully';
+		req.body.text = 'Here is the text of register user';
+		emailService.sendRegistrationEmail(req.body);
 		res.status(201).json({ _id: user.id, email: user.email, username: user.username })
 	} else {
 		res.status(400)
@@ -40,6 +41,11 @@ const login = asyncHandler(async (req, res) => {
 			email: email
 		}
 	})
+
+	req.body.subject = 'Login Successfully';
+	req.body.text = 'Here is the text of Login user';
+	emailService.sendRegistrationEmail(req.body);
+
 	// if (user && await bcrypt.compare(password, user.password)) {
 	// 	const accessToken = jwt.sign({
 	// 		user: {
