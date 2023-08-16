@@ -3,6 +3,8 @@ const asyncHandler = require('express-async-handler')
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 const emailService = require('../emailService');
+const jwt = require('jsonwebtoken')
+
 
 const register = asyncHandler(async (req, res) => {
 	console.log(req.body)
@@ -42,24 +44,25 @@ const login = asyncHandler(async (req, res) => {
 		}
 	})
 
-	req.body.subject = 'Login Successfully';
-	req.body.text = 'Here is the text of Login user';
-	emailService.sendRegistrationEmail(req.body);
+	if (user && await bcrypt.compare(password, user.password)) {
+		const accessToken = jwt.sign({
+			user: {
+				username: user.username,
+				email: user.email,
+				id: user.id,
+			}
+		}, process.env.ACCESS_TOKEN_SECRET,
+			{ expiresIn: "55m" });
 
-	// if (user && await bcrypt.compare(password, user.password)) {
-	// 	const accessToken = jwt.sign({
-	// 		user: {
-	// 			username: user.username,
-	// 			email: user.email,
-	// 			id: user.id,
-	// 		}
-	// 	}, process.env.ACCESS_TOKEN_SECRET,
-	// 		{ expiresIn: "15m" });
-	// 	res.status(200).json({ accessToken });
-	// } else {
-	// 	res.status(401)
-	// 	throw new Error("Something is not valid you entered")
-	// }
+		req.body.subject = 'Login Successfully';
+		req.body.text = 'Here is the text of Login user';
+		emailService.sendRegistrationEmail(req.body);
+		
+		res.status(200).json({ accessToken });
+	} else {
+		res.status(401)
+		throw new Error("Something is not valid you entered")
+	}
 });
 
 module.exports = { register, login }
