@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 
 const validateToken = asyncHandler(async (req, res, next) => {
   let token;
-  let authHeader = req.headers.Authorization || req.headers.authorization
+  let authHeader = req.headers.authorization || req.headers.Authorization
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
@@ -16,10 +16,10 @@ const validateToken = asyncHandler(async (req, res, next) => {
       next();
     });
 
-    if (!token) {
+    res.json({ accessToken: accessToken });
+  }else{
       res.status(401)
       throw new Error("Unauthorized or Token is missing")
-    }
   }
 });
 

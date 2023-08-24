@@ -4,35 +4,45 @@ const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 const emailService = require('../emailService');
 const jwt = require('jsonwebtoken')
-
+const path = require('path');
 
 const register = asyncHandler(async (req, res) => {
-	console.log(req.body)
 	const { username, email, password } = req.body;
+
 	if (!username || !password || !email) {
-		res.status(404)
-		throw new Error("All fields are mandotory")
+		res.status(400).send("All fields are mandatory");
+		return;
 	}
 
-	
+	const existingUser = await prisma.user.findFirst({
+		where: {
+			email: email
+		}
+	});
+
+	if (existingUser) {
+		res.status(400).send("User with this email already exists");
+		return;
+	}
+
 	const hashPassword = await bcrypt.hash(password, 10);
-	const user = await prisma.user.create({
+	const newUser = await prisma.user.create({
 		data: { username, email, password: hashPassword }
 	});
-	
-	if (user) {
+
+	if (newUser) {
 		req.body.subject = 'Registered Successfully';
 		req.body.text = 'Here is the text of register user';
 		emailService.sendRegistrationEmail(req.body);
-		res.status(201).json({ _id: user.id, email: user.email, username: user.username })
+		res.redirect('/login');
 	} else {
-		res.status(400)
-		throw new Error("User not created")
+		res.status(500).send("User creation failed");
 	}
 });
 
 const login = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
+
 	if (!email, !password) {
 		res.status(400)
 		throw new Error("Some Fileds are empty")
@@ -58,7 +68,7 @@ const login = asyncHandler(async (req, res) => {
 		req.body.text = 'Here is the text of Login user';
 		emailService.sendRegistrationEmail(req.body);
 		
-		res.status(200).json({ accessToken });
+		res.redirect('/users/jwttest');
 	} else {
 		res.status(401)
 		throw new Error("Something is not valid you entered")

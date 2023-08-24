@@ -1,7 +1,6 @@
 const nodemailer = require('nodemailer');
 const dotenv =require('dotenv').config();
 
-// Create a transporter object using your email provider's SMTP settings
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -9,7 +8,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.APP_PASSWORD,
   },
 });
-
 
 module.exports = {
     sendRegistrationEmail: (body) => {
