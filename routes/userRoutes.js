@@ -7,7 +7,7 @@ router.post('/register', register)
 
 router.post('/login', login)
 
-router.get('/jwttest', (req, res) => {
+router.get('/jwttest', validateToken, (req, res) => {
   res.send("Hello I'm in JWT Test")
 })
 

@@ -31,9 +31,9 @@ const register = asyncHandler(async (req, res) => {
 	});
 
 	if (newUser) {
-		req.body.subject = 'Registered Successfully';
-		req.body.text = 'Here is the text of register user';
-		emailService.sendRegistrationEmail(req.body);
+		// req.body.subject = 'Registered Successfully';
+		// req.body.text = 'Here is the text of register user';
+		// emailService.sendRegistrationEmail(req.body);
 		res.redirect('/login');
 	} else {
 		res.status(500).send("User creation failed");
@@ -43,7 +43,7 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 
-	if (!email, !password) {
+	if (!email || !password) {
 		res.status(400)
 		throw new Error("Some Fileds are empty")
 	}
@@ -55,7 +55,7 @@ const login = asyncHandler(async (req, res) => {
 	})
 
 	if (user && await bcrypt.compare(password, user.password)) {
-		const accessToken = jwt.sign({
+		const token = jwt.sign({
 			user: {
 				username: user.username,
 				email: user.email,
@@ -64,11 +64,12 @@ const login = asyncHandler(async (req, res) => {
 		}, process.env.ACCESS_TOKEN_SECRET,
 			{ expiresIn: "55m" });
 
-		req.body.subject = 'Login Successfully';
-		req.body.text = 'Here is the text of Login user';
-		emailService.sendRegistrationEmail(req.body);
-		
-		res.redirect('/users/jwttest');
+			// req.body.subject = 'Login Successfully';
+			// req.body.text = 'Here is the text of Login user';
+			// emailService.sendRegistrationEmail(req.body);
+
+			res.cookie("authorization", token)
+			res.redirect('/users/jwttest')
 	} else {
 		res.status(401)
 		throw new Error("Something is not valid you entered")
