@@ -68,8 +68,8 @@ const login = asyncHandler(async (req, res) => {
 			// req.body.text = 'Here is the text of Login user';
 			// emailService.sendRegistrationEmail(req.body);
 
-			res.cookie("authorization", token)
-			res.redirect('/users/jwttest')
+			// res.cookie("authorization", token, { expires: new Date(Date.now() + 900000) });
+			res.redirect(`/users/jwttest?token=${encodeURIComponent(token)}`);
 	} else {
 		res.status(401)
 		throw new Error("Something is not valid you entered")
