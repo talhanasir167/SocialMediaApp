@@ -7,7 +7,10 @@ const validateToken = asyncHandler(async (req, res, next) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;
   if (authHeader && authHeader.startsWith('Bearer')) {
     token = authHeader.split(' ')[1];
-  } else {
+  } else if(req.query.token){
+    token = req.query.token;
+  }
+  else {
     const cookies = req.headers.cookie ? req.headers.cookie.split('; ') : [];
     for (const cookie of cookies) {
       const [cookieName, cookieValue] = cookie.split('=');
