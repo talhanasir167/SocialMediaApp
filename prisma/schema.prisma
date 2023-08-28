@@ -17,3 +17,14 @@ model User{
   password    String 
 }
 
+model Video {
+  id          Int       String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  filePath    String
+  uploader    User      @relation(fields: [uploaderId], references: [id])
+  uploaderId  Int
+}
+
+
+

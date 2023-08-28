@@ -6,11 +6,14 @@ const validateToken = asyncHandler(async (req, res, next) => {
 
   const authHeader = req.headers.authorization || req.headers.Authorization;
   if (authHeader && authHeader.startsWith('Bearer')) {
+    console.log("in header token")
     token = authHeader.split(' ')[1];
   } else if(req.query.token){
+    console.log("in query token")
     token = req.query.token;
   }
   else {
+    console.log("in cookies token")
     const cookies = req.headers.cookie ? req.headers.cookie.split('; ') : [];
     for (const cookie of cookies) {
       const [cookieName, cookieValue] = cookie.split('=');
