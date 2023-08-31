@@ -1,0 +1,28 @@
+<div class="container mt-5">
+  <h2>Video List</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Path</th>
+        <th>Video</th>
+        <th>Title</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% videos.forEach(video => { %>
+        <tr>
+          <td><p>File Path-- <%= video.filePath %></p></td>
+          <td>
+            <video width="450" height="240" controls>
+              <source src="/uploads/<%= video.filename%>" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </td>
+          <td><%= video.title %></td>
+          <td><%= video.description %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

@@ -10,40 +10,58 @@
 
 <body>
   <div class="container mt-5">
-    <h2>Add New Video</h2>
-    <form action="/userIndex/uploadVideo" method="POST">
+    <a href="index" class="btn btn-primary mt-3"> Back to Home</a>
+
+    <h2 class="mb-4" >Add New Video</h2>
+    <form action="/userIndex/uploadVideo" method="POST" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="title" class="form-label">Title:</label>
-        <input type="text" class="form-control" id="title" name="title" >
+        <input type="text" class="form-control" id="title" name="title">
       </div>
       <div class="mb-3">
         <label for="description" class="form-label">Description:</label>
-        <textarea class="form-control" id="description" name="description" ></textarea>
+        <textarea class="form-control" id="description" name="description"></textarea>
       </div>
       <div class="mb-3">
-        <label for="formFile" class="form-label">Upload you video</label>
-        <input class="form-control" type="file" id="formFile">
+        <label for="formFile" class="form-label">Upload your video:</label>
+        <input class="form-control" type="file" name="uploadFile" accept="video/*">
       </div>
       <button type="submit" class="btn btn-primary">Add Video</button>
     </form>
   </div>
 
   <div class="container mt-5">
-    <h2>Video List</h2>
+    <h2 class="mb-4">Video List</h2>
     <table class="table">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>Video</th>
           <th>Title</th>
           <th>Description</th>
-          <th>Uploader ID</th>
         </tr>
       </thead>
-      
+      <tbody>
+        <% videos.forEach(video=> { %>
+          <tr>
+            <td class="align-middle">
+              <div class="embed-responsive embed-responsive-16by9">
+                <video class="embed-responsive-item" width="450" height="240" controls>
+                  <source src="/<%= video.filePath %>" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </td>
+            <td class="align-middle">
+              <%= video.title %>
+            </td>
+            <td class="align-middle">
+              <%= video.description %>
+            </td>
+          </tr>
+          <% }); %>
+      </tbody>
     </table>
   </div>
-
-
 </body>
 
 </html>
