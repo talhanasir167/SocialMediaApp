@@ -15,9 +15,9 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 app.use(express.static('public'));
-app.use(express.static('views'));
 
 app.use('/', require('./routes/indexRoutes'))
+app.use('/chat', require('./routes/chatRoutes'))
 app.use('/userIndex', validateToken, require('./routes/userIndexRoutes'));
 app.use("/users", require('./routes/userRoutes'))
 
