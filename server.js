@@ -5,6 +5,8 @@ const connectPrisma = require("./prisma/testConnection");
 const bodyParser =  require('body-parser');
 const validateToken = require("./middleware/validateJwt");
 const path = require('path');
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 const PORT = process.env.PORT
 
@@ -14,13 +16,17 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/', require('./routes/general_routes/indexRoutes'))
+app.use('/chat', require('./routes/chat_routes/chatRoutes'))
+app.use('/userIndex', validateToken, require('./routes/user_routes/userIndexRoutes'));
+app.use("/users", require('./routes/general_routes/userRoutes'))
 
-app.use('/', require('./routes/indexRoutes'))
-app.use('/chat', require('./routes/chatRoutes'))
-app.use('/userIndex', validateToken, require('./routes/userIndexRoutes'));
-app.use("/users", require('./routes/userRoutes'))
+http.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
-app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`)
-})
+io.on('connection', (socket) => {
+  console.log('A user connected');
+  socket.on('message', (msg) => {
+        socket.broadcast.emit('message', msg)
+    })
+});

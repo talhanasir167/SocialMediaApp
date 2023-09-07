@@ -1,0 +1,64 @@
+Arguments: 
+  /home/dev/.nvm/versions/node/v16.14.2/bin/node /home/dev/.nvm/versions/node/v16.14.2/bin/yarn init
+
+PATH: 
+  /home/dev/.nvm/versions/node/v16.14.2/bin:/usr/share/rvm/gems/ruby-3.1.2/bin:/usr/share/rvm/gems/ruby-3.1.2@global/bin:/usr/share/rvm/rubies/ruby-3.1.2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/share/rvm/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.14.2
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (/home/dev/.nvm/versions/node/v16.14.2/lib/node_modules/yarn/lib/cli.js:137150:13)
+      at Interface.emit (node:events:526:28)
+      at Interface._ttyWrite (node:readline:1081:16)
+      at ReadStream.onkeypress (node:readline:288:10)
+      at ReadStream.emit (node:events:526:28)
+      at emitKeys (node:internal/readline/utils:358:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (node:internal/readline/emitKeypressEvents:61:36)
+      at ReadStream.emit (node:events:526:28)
+      at addChunk (node:internal/streams/readable:315:12)
+
+npm manifest: 
+  {
+    "name": "socialmediaapp",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+      "dev": "nodemon server.js"
+    },
+    "keywords": [],
+    "author": "Talha Nasir <talha.nasir@gmail.com>",
+    "license": "ISC",
+    "dependencies": {
+      "@prisma/client": "^5.0.0",
+      "bcrypt": "^5.1.0",
+      "body-parser": "^1.20.2",
+      "dotenv": "^16.3.1",
+      "ejs": "^3.1.9",
+      "express": "^4.18.2",
+      "express-async-handler": "^1.2.0",
+      "fs": "^0.0.1-security",
+      "jsonwebtoken": "^9.0.1",
+      "mongoose": "^7.4.2",
+      "multer": "^1.4.5-lts.1",
+      "nodemailer": "^6.9.4",
+      "prisma": "^5.1.1",
+      "socket.io": "^4.7.2"
+    },
+    "repository": "https://talhanasir167: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@github.com/talhanasir167/SocialMediaApp.git"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

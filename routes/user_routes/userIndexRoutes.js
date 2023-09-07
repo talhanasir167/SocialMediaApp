@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { uploadVideo, redirectToVideo } = require('../controller/videoController');
+const { uploadVideo, redirectToVideo } = require('../../controller/videoController');
 const multer = require('multer');
-const validateToken = require('../middleware/validateJwt');
+const validateToken = require('../../middleware/validateJwt');
 const path = require('path');
 
 router.get('/index', (req, res) => {
-	res.render('user_index');
+	res.render('user_views/user_index');
 });
 
 router.get('/redirect-to-video', validateToken, redirectToVideo);
